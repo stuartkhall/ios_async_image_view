@@ -1,0 +1,8 @@
+Drop in asynchronous replacement for UIImageView.
+
+usage:
+
+AsyncImageView* iv = [[AsyncImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+[iv loadFromUrl:theImageUrl];
+[self addSubview:iv];
+[iv release]; 
