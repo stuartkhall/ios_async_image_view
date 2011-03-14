@@ -1,4 +1,4 @@
-Drop in asynchronous replacement for UIImageView.
+Drop in asynchronous replacement for UIImageView with local caching.
 
 usage:
 
