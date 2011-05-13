@@ -75,6 +75,12 @@ static NSString* CacheDirectory = nil;
 		[request setHTTPMethod:@"GET"];
 		connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 	}
+  else {
+    // Alert the delegate
+		if (delegate && [delegate respondsToSelector:@selector(onImageLoaded:image:)]) {
+			[delegate onImageLoaded:self image:self.image];
+		}
+  }
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
