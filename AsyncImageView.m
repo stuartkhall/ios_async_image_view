@@ -41,13 +41,7 @@ static NSString* CacheDirectory = nil;
 	return [CacheDirectory stringByAppendingPathComponent:filename];
 }
 
-- (void)saveFileImage:(UIImage *)image forUrl:(NSString*)url {
-	// Extract the data for the image
-	NSData* data = UIImagePNGRepresentation(image);
-	if (!data) {
-		data = UIImageJPEGRepresentation(image, 1.0);
-	}
-	
+- (void)saveFileImage:(NSData *)data forUrl:(NSString*)url {
 	// Write to the disk
     [[NSFileManager defaultManager] createFileAtPath:[self pathForImage:url] contents:data attributes:nil];
 }
@@ -111,7 +105,7 @@ static NSString* CacheDirectory = nil;
 	self.image = [UIImage imageWithData:responseData];
 	if (self.image) {
 		// Cache the image
-		[self saveFileImage:self.image forUrl:requestedUrl];
+		[self saveFileImage:responseData forUrl:requestedUrl];
 		
 		// Alert the delegate
 		if (delegate && [delegate respondsToSelector:@selector(onImageLoaded:image:)]) {
