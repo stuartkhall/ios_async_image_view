@@ -48,7 +48,7 @@ static NSString* CacheDirectory = nil;
 
 - (UIImage *)loadFileImage:(NSString *)url { 
 	// Attempts to load the image from a url
-    return [UIImage imageWithContentsOfFile:[self pathForImage:url]];
+    return [[[UIImage alloc] initWithContentsOfFile:[self pathForImage:url]] autorelease];
 }
 
 - (void)loadFromUrl:(NSString*)url {
@@ -102,7 +102,7 @@ static NSString* CacheDirectory = nil;
 	self.connection = nil;	
 	
 	// Turn into an image
-	self.image = [UIImage imageWithData:responseData];
+	self.image = [[[UIImage alloc] initWithData:responseData] autorelease];
 	if (self.image) {
 		// Cache the image
 		[self saveFileImage:responseData forUrl:requestedUrl];
@@ -124,32 +124,22 @@ static NSString* CacheDirectory = nil;
 	self.responseData = nil;
 }
 
-#pragma mark Touch Events
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	[super touchesBegan:touches withEvent:event];
-	
-	// Add some user feedback like a button
-	self.alpha = 0.5;
+- (void)mouseDown:(NSEvent *)event {
+    [self setAlphaValue:0.5];
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-	[super touchesEnded:touches withEvent:event];
-	
-	// Clear the user feedback
-	self.alpha = 1;
-	
-	if (delegate) {
-		// Let the delegate know about the touch
-		[delegate onTouchUpInside:self];
-	}
+- (void)mouseUp:(NSEvent *)event {
+    [self setAlphaValue:1];
+    
+    if (delegate && [delegate respondsToSelector:@selector(onImageClicked:)]) {
+        [delegate onImageClicked:self];
+    }
 }
 
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-	[super touchesCancelled:touches withEvent:event];
-	
-	// Clear the user feedback
-	self.alpha = 1;
+- (void)mouseExited:(NSEvent *)theEvent {
+    [self setAlphaValue:1];
 }
+
 
 @end
 
