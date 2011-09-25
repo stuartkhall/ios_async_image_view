@@ -13,14 +13,28 @@
 @synthesize delegate;
 @synthesize requestedUrl;
 @synthesize connection;
+@synthesize flag;
+@synthesize borderColor;
+@synthesize enableInteraction;
 
 static NSString* CacheDirectory = nil;
 
+- (id)initWithFrame:(NSRect)frameRect {
+    if (self = [super initWithFrame:frameRect]) {
+        self.enableInteraction = YES;
+    }
+    
+    return self;
+}
+
 - (void)dealloc {
     // Cleanup
+    self.flag = nil;
 	self.responseData = nil;
 	self.delegate = nil;
     self.connection = nil;
+    self.borderColor = nil;
+    
 	[super dealloc];
 }
 
@@ -125,19 +139,42 @@ static NSString* CacheDirectory = nil;
 }
 
 - (void)mouseDown:(NSEvent *)event {
-    [self setAlphaValue:0.5];
+    if (enableInteraction)
+        [self setAlphaValue:0.5];
+    else
+        [super mouseDown:event];
 }
 
 - (void)mouseUp:(NSEvent *)event {
-    [self setAlphaValue:1];
-    
-    if (delegate && [delegate respondsToSelector:@selector(onImageClicked:)]) {
-        [delegate onImageClicked:self];
+    if (enableInteraction) {
+        [self setAlphaValue:1];
+        
+        if (delegate && [delegate respondsToSelector:@selector(onImageClicked:)]) {
+            [delegate onImageClicked:self];
+        }
+    }
+    else {
+        [super mouseUp:event];
     }
 }
 
 - (void)mouseExited:(NSEvent *)theEvent {
-    [self setAlphaValue:1];
+    if (enableInteraction) {
+        [self setAlphaValue:1];
+    }
+    else {
+        [super mouseExited:theEvent];
+    }
+}
+
+- (void)drawRect:(NSRect)frame {
+    [super drawRect:frame]; // this takes care of image
+    
+    if (borderColor) {
+        [NSBezierPath setDefaultLineWidth:1.0];
+        [borderColor set];
+        [NSBezierPath strokeRect:frame];
+    }
 }
 
 

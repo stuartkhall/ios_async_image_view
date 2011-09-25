@@ -25,10 +25,14 @@
     NSURLConnection* connection;
 }
 
+@property (nonatomic, retain) NSString* flag;
+
 @property (nonatomic, assign) __weak id<AsyncImageViewDelegate> delegate;
 @property (nonatomic, retain) NSMutableData *responseData;
 @property (nonatomic, retain) NSString* requestedUrl;
 @property (nonatomic, retain) NSURLConnection* connection;
+@property (nonatomic, retain) NSColor* borderColor;
+@property (assign) BOOL enableInteraction;
 
 - (void)loadFromUrl:(NSString*)url;
 
