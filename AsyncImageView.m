@@ -43,7 +43,9 @@ static NSString* CacheDirectory = nil;
 	if (!CacheDirectory) {
         // Extract the cache path
 		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-		CacheDirectory = [[[paths objectAtIndex:0] stringByAppendingPathComponent:@"AsyncImageView"] retain];
+        
+        NSString* bundleName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
+		CacheDirectory = [[[[paths objectAtIndex:0] stringByAppendingPathComponent:bundleName]  stringByAppendingPathComponent:@"AsyncImageView"] retain];
         
         // Ensure our folder exists
         [[NSFileManager defaultManager] createDirectoryAtPath:CacheDirectory withIntermediateDirectories:YES attributes:nil error:nil];
