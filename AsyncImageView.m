@@ -46,7 +46,7 @@ static NSString* CacheDirectory = nil;
         
         NSString* bundleName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
 		CacheDirectory = [[[[paths objectAtIndex:0] stringByAppendingPathComponent:bundleName]  stringByAppendingPathComponent:@"AsyncImageView"] retain];
-        
+		
         // Ensure our folder exists
         [[NSFileManager defaultManager] createDirectoryAtPath:CacheDirectory withIntermediateDirectories:YES attributes:nil error:nil];
 	}
